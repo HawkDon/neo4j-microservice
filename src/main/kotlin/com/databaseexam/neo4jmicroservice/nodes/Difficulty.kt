@@ -1,5 +1,5 @@
 package com.databaseexam.neo4jmicroservice.nodes
 
-class Difficulty(
+data class Difficulty(
         val name: String
 )

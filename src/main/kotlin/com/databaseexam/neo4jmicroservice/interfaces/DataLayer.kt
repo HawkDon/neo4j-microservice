@@ -16,7 +16,7 @@ interface DataLayer<T> {
 
     fun updateOne(course: T): ResponseEntity<HttpStatus>
 
-    fun deleteOne(title: String): ResponseEntity<HttpStatus>
+    fun deleteOne(id: String): ResponseEntity<HttpStatus>
 
-    fun filter(tags: List<String>, level: String, price: Int, operator: Operation): List<T>
+    // fun filter(tags: List<String>, level: String, price: Int, operator: Operation): List<T>
 }

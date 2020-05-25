@@ -17,15 +17,20 @@ fun query(query: String) = driver.session().run(query)
 fun getListOfCourses(result: Result): MutableList<Course> {
     val courses = mutableListOf<Course>()
     while(result.hasNext()) {
-        val record = result.next()[0].asMap()
-        val course = Course(
-                id = record["id"] as String,
-                name = record["name"] as String,
-                participants = record["participants"].toString().toInt(),
-                audited = record["audited"].toString().toInt(),
-                date = record["date"] as String,
-                price = record["price"].toString().toInt())
+        val course = result.next()[0].asMap().toCourse()
         courses.add(course)
     }
     return courses
+}
+
+fun MutableMap<String, Any>.toCourse(): Course {
+    val course = Course(
+            id = this["id"] as String,
+            name = this["name"] as String,
+            participants = this["participants"].toString().toInt(),
+            audited = this["audited"].toString().toInt(),
+            date = this["date"] as String,
+            price = this["price"].toString().toInt()
+    )
+    return course
 }

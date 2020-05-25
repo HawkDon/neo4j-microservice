@@ -1,5 +1,5 @@
 package com.databaseexam.neo4jmicroservice.nodes
-class Course(
+data class Course(
         val id: String,
         val name: String,
         val participants: Int,

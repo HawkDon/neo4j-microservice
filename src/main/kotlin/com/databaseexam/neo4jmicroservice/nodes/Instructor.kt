@@ -1,6 +1,6 @@
 package com.databaseexam.neo4jmicroservice.nodes
 
-class Instructor(
+data class Instructor(
         val id: String,
         val name: String
 )

@@ -203,7 +203,7 @@ class Database{
                 val databaseSubject = Subject(name = record["name"] as String)
                 query("""
                 MATCH (course:Course {id: "${course.id}"}), (subject:Subject {name: "${databaseSubject.name}"})
-                CREATE (course)-[:INSTRUCTED_BY]->(subject)
+                CREATE (course)-[:SUBJECT_OF]->(subject)
                 """.trimIndent())
             }
 

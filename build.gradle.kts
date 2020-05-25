@@ -16,6 +16,7 @@ repositories {
 }
 
 dependencies {
+	implementation("org.neo4j.driver:neo4j-java-driver:4.0.1")
 	implementation("org.springframework.boot:spring-boot-starter-data-neo4j")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

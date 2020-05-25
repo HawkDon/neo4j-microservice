@@ -1,8 +1,4 @@
 package com.databaseexam.neo4jmicroservice.nodes
-
-import org.neo4j.ogm.annotation.*
-
-@NodeEntity
 class Course(
         val id: String,
         val name: String,

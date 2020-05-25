@@ -1,20 +1,54 @@
 package com.databaseexam.neo4jmicroservice
 
 import com.databaseexam.neo4jmicroservice.nodes.*
+import com.opencsv.CSVReader
+import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.Driver
+import org.neo4j.driver.GraphDatabase
 import org.springframework.stereotype.Component
+import java.io.FileReader
 import java.util.*
+import javax.annotation.PostConstruct
 import kotlin.random.Random
 
+val driver: Driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "password"))
+
 @Component
-class PopulateData {
+class Database{
 
     val difficulties = arrayListOf<String>(
             "Beginner",
             "Intermediate",
             "Expert"
     )
-    fun populateNodesFromCSV(records: MutableList<Array<String>>, driver: Driver) {
+    @PostConstruct
+    fun initIt() {
+        val records = mutableListOf<Array<String>>()
+        val csvReader = CSVReader(FileReader(javaClass.classLoader.getResource("init.csv").path))
+
+        var values: Array<String>?
+
+        // We skip initial because we do not need the titles
+        csvReader.readNext()
+
+        values = csvReader.readNext();
+        while (values != null) {
+            records.add(values)
+            val current = csvReader.readNext()
+            values = current
+        }
+
+
+        // Create nodes
+        populateNodesFromCSV(records)
+        // Create instructor relationships
+        createInstructorRelationShips(records)
+        // Create course relationships
+        createCourseRelationShips(records)
+
+    }
+
+    fun populateNodesFromCSV(records: MutableList<Array<String>>) {
         // Temp for now. Used for cleanup
 
         val allSubjects = getAllSubjects(records)
@@ -65,7 +99,7 @@ class PopulateData {
 
     }
 
-    fun createInstructorRelationShips(records: MutableList<Array<String>>, driver: Driver) {
+    fun createInstructorRelationShips(records: MutableList<Array<String>>) {
 
         val session = driver.session()
         val result = session.run("MATCH (i:Instructor) return i")
@@ -133,7 +167,7 @@ class PopulateData {
         }
     }
 
-    fun createCourseRelationShips(records: MutableList<Array<String>>, driver: Driver) {
+    fun createCourseRelationShips(records: MutableList<Array<String>>) {
 
         val session = driver.session()
         val result = session.run("""MATCH (c:Course) return c""")

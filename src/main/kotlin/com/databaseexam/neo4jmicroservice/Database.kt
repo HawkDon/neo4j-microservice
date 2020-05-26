@@ -24,6 +24,9 @@ class Database{
     @PostConstruct
     fun initIt() {
 
+        // Wipe all data to begin with
+        query("""match (a) -[r] -> () delete a, r""")
+        query("""match (a) delete a""")
         // Get records from CSV file
         val records = getRecordsFromCSVFile()
         // Create nodes
